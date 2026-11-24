@@ -1,0 +1,32 @@
+[hidden]{display:none!important}
+.case-cover{min-height:100svh;display:grid;align-items:center;justify-items:end;position:relative;isolation:isolate;padding:clamp(24px,6vh,68px) clamp(24px,9vw,148px);color:#f5e6cc;background:#13272a url("ravenswood-menu.webp") center 52%/cover no-repeat}
+.case-cover:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#0e171b08 20%,#0d1d2261 53%,#111c20dd 93%),linear-gradient(0deg,#0b151a80,transparent 40%)}
+.cover-content{width:min(100%,395px);padding:12px 0;position:relative}
+.cover-series{color:#eed197;font-size:clamp(10px,1.2vw,13px);text-transform:uppercase;letter-spacing:.28em;font-weight:700}
+.cover-content h1{font:600 clamp(61px,8.75vw,134px)/.82 var(--serif);margin:17px 0 18px;letter-spacing:-.066em;color:#f8efd9;text-shadow:0 6px 36px #090d14da;outline:0}
+.cover-subtitle{color:#e9ce9e;font:600 clamp(14px,1.65vw,21px)/1.25 var(--serif);letter-spacing:.035em}
+.cover-actions{display:grid;gap:4px;margin:clamp(20px,5vh,47px) 0 0;max-width:315px}
+.cover-actions button{border:1px solid transparent;background:transparent;color:#e5ded0;border-radius:7px;text-align:left;min-height:43px;padding:8px 12px;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.cover-actions button:not(.featured-action):hover{border-color:#eecb905c;background:#a9854627;color:#fff1d4}
+.cover-actions button.featured-action{background:#eac485;color:#292723;border-color:#f5d49b;min-height:46px;margin-bottom:3px;box-shadow:0 5px 28px #070f11a6}
+.cover-actions button.featured-action:hover{background:#f1d29b}
+.cover-actions .featured-action span{font-size:20px;margin-right:2px}
+.cover-actions .reset-action{color:#d6ae9f;font-weight:600}
+#continue-label{opacity:.69;font-size:11px;max-width:135px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.cutscene{position:relative;min-height:100svh;background:#0b181d;color:#f6ead2;display:grid;grid-template-rows:auto 1fr auto;overflow:hidden;isolation:isolate}
+.shot-stage{position:absolute;inset:0;z-index:-2;background:#11282b url("ravenswood-menu.webp") center/cover no-repeat}
+.shot-stage:after{content:"";position:absolute;inset:0;background:linear-gradient(#0d171bb5,transparent 19%,transparent 69%,#0a141ac9);pointer-events:none}
+#shot-canvas{width:100%;height:100%;display:block}
+.shot-header{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:15px clamp(16px,4.5vw,65px);color:#ead4a5;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}
+.shot-header button,.shot-caption button{background:#18292dd9;border:1px solid #bda277;border-radius:5px;color:#f6e6c6;font-size:13px;padding:10px 15px;white-space:nowrap}
+.shot-header button:hover,.shot-caption button:hover{background:#425052}
+.shot-caption{grid-row:3;margin:0 auto clamp(12px,4vh,43px);width:min(930px,calc(100% - 32px));padding:clamp(14px,2.5vw,24px);background:#122026eb;border:1px solid #ae926499;border-radius:9px;display:flex;align-items:end;justify-content:space-between;gap:18px;box-shadow:0 9px 40px #0b1219a6}
+.shot-caption h2{color:#f5dbac;font-size:clamp(18px,3.3vw,28px);outline:0}
+.shot-caption p{margin:7px 0 0;color:#eee7dc;line-height:1.52;font-size:14px}
+.shot-caption button{background:#e4bc7d;color:#27251f;flex:none;font-weight:700}.shot-caption button:hover{background:#f6cf91}
+.case-form{display:grid;gap:10px;margin-top:13px}.case-form label{font-size:13px;font-weight:700;color:#504438}.case-form input{border:1px solid #ad9876;border-radius:5px;background:#fffaf0;padding:10px;color:#2c2520;font:inherit;width:100%}.case-form input:focus-visible{outline:2px solid #b78b52;outline-offset:2px}.case-form .primary{justify-self:end}
+.score-list{margin-top:12px;border-collapse:collapse;width:100%;font-size:13px;color:#3e3c31;table-layout:fixed}.score-list th,.score-list td{text-align:left;padding:9px 5px;border-bottom:1px solid #d9c9ac;overflow-wrap:anywhere}.score-list th:last-child,.score-list td:last-child{text-align:right;width:22%}
+#main-menu{background:none;border:0;text-align:left;padding:0;cursor:pointer}
+.player-score b{max-width:min(16vw,160px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:660px){.case-cover{padding:clamp(28px,42svh,53svh) 24px 35px;justify-items:center;align-items:end;background-position:35% top}.case-cover:before{background:linear-gradient(0deg,#0d181a 7%,#14272ae8 40%,#11242510 86%)}.cover-content{width:min(100%,400px)}.cover-content h1{font-size:clamp(56px,16vw,84px)}.cover-actions{margin-top:20px}.cover-actions button{min-height:38px}.shot-caption{flex-wrap:wrap;gap:10px}.shot-caption button{margin-left:auto}.shot-header button,.shot-caption button{font-size:12px;padding:8px 12px}.player-score span{display:none}}
+@media(max-width:492px){.player-score{display:none}.mast-actions .score:nth-child(2){display:grid}}

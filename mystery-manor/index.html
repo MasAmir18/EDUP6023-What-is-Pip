@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>(function(){
+  function post(m){try{parent.postMessage(m,'*')}catch(e){}}
+  var last=0;
+  function g(){var n=Date.now();if(n-last<600)return;last=n;post({type:'pip-gesture'})}
+  addEventListener('pointerdown',g,true);addEventListener('keydown',g,true);addEventListener('touchend',g,true);
+  try{var ss=window.speechSynthesis;if(ss&&ss.speak){
+    var act=new Set(),osp=ss.speak.bind(ss),oc=ss.cancel.bind(ss);
+    var upd=function(){post({type:'pip-duck',on:act.size>0})};
+    ss.speak=function(u){try{
+      u.addEventListener('start',function(){act.add(u);upd()});
+      ['end','error'].forEach(function(ev){u.addEventListener(ev,function(){act.delete(u);upd()})});
+    }catch(e){}return osp(u)};
+    ss.cancel=function(){act.clear();upd();return oc()};
+  }}catch(e){}
+})();</script><script>window.__pipNav=function(d){try{parent.postMessage({type:"pip-nav",dir:d},"*")}catch(e){}};window.__pipSend=function(g,s,m,n){try{parent.postMessage({type:"pip-score",game:g,score:s,max:m,name:n||""},"*")}catch(e){}};</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore an isometric tabletop manor with Detective Pip and solve fifteen preposition clues.">
+  <title>Mystery Manor · The Ravenswood Case</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="case-menu.css">
+  <script defer src="three.min.js"></script>
+  <script defer src="music.js"></script>
+  <script type="module" src="game.js"></script>
+</head>
+<body>
+  <main class="case-cover" id="case-menu" aria-labelledby="menu-title">
+    <div class="cover-content">
+      <p class="cover-series">Detective Pip</p>
+      <h1 id="menu-title" tabindex="-1">Mystery<br>Manor</h1>
+      <p class="cover-subtitle">The Ravenswood Case</p>
+      <nav class="cover-actions" aria-label="Main menu">
+        <button type="button" id="new-case" class="featured-action">Begin investigation <span aria-hidden="true">↗</span></button>
+        <button type="button" id="continue-case" hidden>Continue case <span id="continue-label"></span></button>
+        <button type="button" id="watch-intro">Watch the intro</button>
+        <button type="button" id="case-scores">Case scores</button>
+        <button type="button" id="help">How to play</button>
+        <button type="button" id="reset-case" class="reset-action" hidden>Reset saved case</button>
+      </nav>
+    </div>
+  </main>
+  <section class="cutscene" id="cutscene" aria-labelledby="scene-title" hidden>
+    <div class="shot-stage" id="shot-stage" aria-hidden="true">
+      <canvas id="shot-canvas" hidden></canvas>
+    </div>
+    <div class="shot-header">
+      <span id="scene-number"></span>
+      <button type="button" id="skip-scene">Skip intro</button>
+    </div>
+    <div class="shot-caption" aria-live="polite">
+      <div><h2 id="scene-title" tabindex="-1"></h2><p id="scene-text"></p></div>
+      <button type="button" id="next-scene">Next scene <span aria-hidden="true">→</span></button>
+    </div>
+  </section>
+  <div id="game-shell" hidden>
+  <header class="masthead">
+    <button type="button" id="main-menu" class="brand" aria-label="Return to main menu"><span class="brand-mark" aria-hidden="true">✦</span><span>Mystery Manor <small>Main menu</small></span></button>
+    <div class="mast-actions">
+      <div class="score player-score"><span>Detective</span><b id="player-label"></b></div>
+      <div class="score"><span>Evidence</span><b id="global-progress">0 / 15</b></div>
+      <div class="score"><span>Case score</span><b id="global-score">0</b></div>
+    </div>
+  </header>
+  <main class="layout">
+    <aside class="case-file" aria-label="Rooms">
+      <figure class="portrait"><img src="pip.webp" alt="Detective Pip, a miniature owl in a teal trench coat"><figcaption><strong>Detective Pip</strong><span>Ravenswood case file</span></figcaption></figure>
+      <div class="file-heading"><h2>The manor</h2><span id="room-counter">1 of 4</span></div>
+      <nav id="rooms" aria-label="Choose a room"></nav>
+      <button id="deduce" class="primary deduce" type="button" disabled>Make an accusation</button>
+    </aside>
+    <section class="stage" aria-labelledby="room-title">
+      <div class="scene-heading">
+        <p class="scene-overline" id="room-overline">Room I</p>
+        <h1 id="room-title">The Grand Foyer</h1>
+        <p id="objective">Find the clues, then reach the exit.</p>
+      </div>
+      <button id="view" class="view-button" type="button" aria-pressed="false" title="Switch between isometric and overhead views">Overhead view</button>
+      <div id="board" class="board" aria-label="Explore the manor">
+        <canvas id="world" aria-hidden="true"></canvas>
+        <div id="nodes" aria-label="Clues and exits"></div>
+      </div>
+      <div class="stage-foot">
+        <div id="walk-status" role="status" aria-live="polite">Click the floor or use WASD to explore.</div>
+        <div class="controls">
+          <button id="interact" type="button" disabled>Inspect clue</button>
+          <button id="retry" type="button">⟲ <span>Return to entrance</span></button>
+        </div>
+      </div>
+    </section>
+    <aside class="brief" aria-label="Investigation notes">
+      <div class="section-heading"><p class="eyebrow">Investigation</p><h2>Room evidence</h2></div>
+      <p id="room-notes">Someone took the Golden Owl Trophy. Gather clues to reconstruct what happened.</p>
+      <div id="evidence"></div>
+      <div class="legend">
+        <h3>Room markers</h3>
+        <div><span class="legend-mark clue">✦</span>Clue to inspect</div>
+        <div><span class="legend-mark exit">↗</span>Room exit</div>
+      </div>
+    </aside>
+  </main>
+  </div>
+  <dialog id="modal" aria-labelledby="modal-title">
+    <div id="dialog-body"></div>
+  </dialog>
+  <audio id="detective-theme" src="footsteps-at-ravenswood.mp3" preload="metadata" autoplay loop></audio>
+</body>
+</html>
