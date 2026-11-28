@@ -6,37 +6,47 @@
   <meta name="description" content="Continue Pip’s story after Operation Skyfall and practise English prepositions of place and movement across five missions.">
   <title>Operation Nightfall · Where Is Pip?</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&amp;family=Fredoka:wght@500;600;700&amp;display=swap">
+  <link rel="stylesheet" href="../course/forest.css">
   <link rel="stylesheet" href="../course/course-pages.css">
+  <script src="../course/forest.js" defer></script>
+  <script src="./player.js" defer></script>
 </head>
 <body class="nightfall">
-  <header class="banner">
-    <div class="wrap">
-      <p class="eyebrow">After Operation Skyfall</p>
-      <h1>Operation Nightfall</h1>
-      <p class="intro">The last convoy is still crossing Eagle’s Reach. Follow Pip from the Falcon Outpost to Mount Valtor and use prepositions of place and movement to solve five missions.</p>
-      <a class="button" href="https://pip-operation-nightfall.pastelpearl11.chatgpt.site/" target="_blank" rel="noopener">Play Operation Nightfall</a>
-      <p class="access">Opens in a new tab. The game requires an account with access to the private site.</p>
+  <div data-course-forest aria-hidden="true"></div>
+  <div id="nightfall-briefing" class="briefing">
+    <header class="banner">
+      <div class="wrap">
+        <p class="eyebrow">After Operation Skyfall</p>
+        <h1>Operation Nightfall</h1>
+        <p class="intro">The last convoy is still crossing Eagle’s Reach. Follow Pip from the Falcon Outpost to Mount Valtor and use prepositions of place and movement to solve five missions.</p>
+        <button class="button" type="button" id="play-nightfall" aria-controls="nightfall-player">Play Operation Nightfall</button>
+      </div>
+    </header>
+    <main class="wrap layout">
+      <section class="panel">
+        <h2>Five missions</h2>
+        <ol class="missions">
+          <li>The Falcon Outpost</li>
+          <li>Shadows of the City</li>
+          <li>The Desert Conspiracy</li>
+          <li>The Eclipse Facility</li>
+          <li>The Final Eclipse</li>
+        </ol>
+      </section>
+      <section class="panel">
+        <h2>Before you start</h2>
+        <dl>
+          <dt>Read each clue</dt><dd>Find the landmark and match the position or movement it describes.</dd>
+          <dt>Watch at your pace</dt><dd>Pause a cutscene and left-click the film or select <strong>Next beat</strong> to advance.</dd>
+          <dt>Review your answers</dt><dd>Open the preposition mastery report from Campaign Results after the final mission.</dd>
+        </dl>
+      </section>
+    </main>
+  </div>
+  <section class="nightfall-player" id="nightfall-player" aria-label="Operation Nightfall game" hidden>
+    <div class="nightfall-toolbar">
+      <button class="button" type="button" id="close-nightfall">Back to briefing</button>
     </div>
-  </header>
-  <main class="wrap layout">
-    <section class="panel">
-      <h2>Five missions</h2>
-      <ol class="missions">
-        <li>The Falcon Outpost</li>
-        <li>Shadows of the City</li>
-        <li>The Desert Conspiracy</li>
-        <li>The Eclipse Facility</li>
-        <li>The Final Eclipse</li>
-      </ol>
-    </section>
-    <section class="panel">
-      <h2>Before you start</h2>
-      <dl>
-        <dt>Read each clue</dt><dd>Find the landmark and match the position or movement it describes.</dd>
-        <dt>Watch at your pace</dt><dd>Pause a cutscene and left-click the film or select <strong>Next beat</strong> to advance.</dd>
-        <dt>Review your answers</dt><dd>Open the preposition mastery report from Campaign Results after the final mission.</dd>
-      </dl>
-    </section>
-  </main>
+  </section>
 </body>
 </html>

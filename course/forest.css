@@ -1,0 +1,176 @@
+/* Shared night forest from the course overview. */
+.forest-bg{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  overflow:hidden;
+  background:linear-gradient(180deg,#08213b 0%,#0c3f55 34%,#13635a 66%,#0b3a2c 100%);
+}
+.sky-stars,.fireflies,.leaves{position:absolute;inset:0;pointer-events:none}
+
+.star{
+  position:absolute;
+  border-radius:50%;
+  background:#fffbe6;
+  box-shadow:0 0 6px rgba(255,251,230,.85);
+  animation:twinkle var(--dur,3.4s) ease-in-out infinite alternate;
+  animation-delay:var(--del,0s);
+}
+@keyframes twinkle{
+  0%{opacity:.22;transform:scale(.82)}
+  100%{opacity:1;transform:scale(1.18)}
+}
+
+/* Soft diagonal forest canopy light beams (no sun or moon) */
+.beam{
+  position:absolute;
+  top:-18%;
+  width:240px;
+  height:125%;
+  background:linear-gradient(180deg,rgba(168,242,222,.16) 0%,rgba(244,201,93,.06) 52%,transparent 92%);
+  filter:blur(26px);
+  transform-origin:top center;
+  transform:rotate(14deg);
+  animation:beamPulse 9s ease-in-out infinite alternate;
+}
+.beam.b1{left:12%;animation-delay:0s}
+.beam.b2{left:46%;width:300px;animation-delay:-3s}
+.beam.b3{left:76%;width:210px;animation-delay:-6s}
+@keyframes beamPulse{
+  0%{opacity:.32}
+  50%{opacity:.78}
+  100%{opacity:.4}
+}
+
+/* Seamless scrolling & swaying pine layers with passive scroll parallax */
+.tree-layer{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  overflow:hidden;
+}
+.tree-layer.far{height:370px;z-index:2;bottom:var(--far-y,0px)}
+.tree-layer.mid{height:510px;z-index:4;bottom:var(--mid-y,0px)}
+.tree-layer.near{height:660px;z-index:6;bottom:var(--near-y,0px)}
+
+.tree-track{
+  display:flex;
+  width:4800px;
+  height:100%;
+  will-change:transform;
+  animation:forestScroll var(--spd,140s) linear infinite;
+}
+.tree-layer.far .tree-track{--spd:220s}
+.tree-layer.mid .tree-track{--spd:140s}
+.tree-layer.near .tree-track{--spd:90s}
+
+@keyframes forestScroll{
+  from{transform:translate3d(0,0,0)}
+  to{transform:translate3d(-1600px,0,0)}
+}
+
+.tree-tile{
+  flex:none;
+  width:1600px;
+  height:100%;
+  transform-origin:50% 100%;
+  animation:treeSway var(--sway,6.5s) ease-in-out infinite alternate;
+}
+.tree-layer.far .tree-tile{--sway:7.8s}
+.tree-layer.mid .tree-tile{--sway:6.6s}
+.tree-layer.near .tree-tile{--sway:5.6s}
+@keyframes treeSway{
+  from{transform:skewX(-.7deg)}
+  to{transform:skewX(.7deg)}
+}
+
+/* Drifting mist bands between tree layers */
+.mist{
+  position:absolute;
+  left:-15%;
+  right:-15%;
+  border-radius:50%;
+  filter:blur(34px);
+  pointer-events:none;
+  animation:mistDrift var(--mdur,38s) ease-in-out infinite alternate;
+}
+.mist.m1{
+  bottom:150px;
+  height:170px;
+  z-index:3;
+  background:radial-gradient(ellipse at center,rgba(182,242,226,.22) 0%,rgba(20,86,106,.08) 55%,transparent 78%);
+  --mdur:46s;
+}
+.mist.m2{
+  bottom:85px;
+  height:190px;
+  z-index:5;
+  background:radial-gradient(ellipse at center,rgba(214,242,228,.2) 0%,rgba(15,106,82,.07) 58%,transparent 80%);
+  --mdur:39s;
+  animation-delay:-14s;
+}
+.mist.m3{
+  bottom:-10px;
+  height:160px;
+  z-index:7;
+  background:radial-gradient(ellipse at center,rgba(148,226,196,.18) 0%,rgba(9,58,45,.08) 60%,transparent 82%);
+  --mdur:34s;
+  animation-delay:-22s;
+}
+@keyframes mistDrift{
+  from{transform:translateX(-8%)}
+  to{transform:translateX(8%)}
+}
+
+/* Fireflies */
+.fireflies{z-index:8}
+.firefly{
+  position:absolute;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#fff6a8;
+  box-shadow:0 0 10px 3px rgba(244,201,93,.85),0 0 20px 6px rgba(244,201,93,.35);
+  animation:
+    ffWander var(--wdur,13s) ease-in-out infinite alternate,
+    ffGlow var(--gdur,2.8s) ease-in-out infinite alternate;
+  animation-delay:var(--wdel,0s),var(--gdel,0s);
+}
+@keyframes ffWander{
+  0%{transform:translate(0,0)}
+  50%{transform:translate(var(--dx1,28px),var(--dy1,-24px))}
+  100%{transform:translate(var(--dx2,-22px),var(--dy2,18px))}
+}
+@keyframes ffGlow{
+  0%{opacity:.18;transform:scale(.75)}
+  100%{opacity:1;transform:scale(1.2)}
+}
+
+/* Falling leaves */
+.leaves{z-index:9}
+.leaf{
+  position:absolute;
+  top:-30px;
+  width:13px;
+  height:9px;
+  border-radius:2px 12px 2px 12px;
+  opacity:.82;
+  animation:leafFall var(--ldur,16s) linear infinite;
+  animation-delay:var(--ldel,0s);
+}
+@keyframes leafFall{
+  0%{transform:translate3d(0,-30px,0) rotate(0deg)}
+  25%{transform:translate3d(var(--swayA,36px),26vh,0) rotate(95deg)}
+  50%{transform:translate3d(var(--swayB,-28px),54vh,0) rotate(195deg)}
+  75%{transform:translate3d(var(--swayA,30px),80vh,0) rotate(285deg)}
+  100%{transform:translate3d(0,108vh,0) rotate(375deg)}
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .forest-bg * { animation: none !important; }
+  .forest-bg .star { opacity: .53; }
+  .forest-bg .firefly { opacity: .48; }
+  .forest-bg .leaves { display: none; }
+}
