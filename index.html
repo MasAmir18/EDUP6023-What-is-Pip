@@ -23,10 +23,10 @@ body{font-family:var(--head);color:var(--parch);display:flex;flex-direction:colu
 #sitenav .step:hover:not(:disabled){transform:translateY(-1px)}
 #sitenav .step:active:not(:disabled){transform:translateY(3px);box-shadow:0 0 0 var(--wood-d)}
 #sitenav .step:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
-#tabs{flex:1 1 auto;min-width:0;display:flex;justify-content:center;gap:5px;padding:4px 2px}
+#tabs{flex:1 1 auto;min-width:0;display:flex;position:relative;justify-content:safe center;overflow-x:auto;scrollbar-width:none;gap:5px;padding:4px 2px}
 #pageSel{display:none;flex:1 1 auto;min-width:0;height:38px;border-radius:99px;border:2px solid var(--gold);background:var(--parch);color:var(--wood-d);font:700 .95rem var(--head);padding:0 10px}
 #tabs::-webkit-scrollbar{display:none}
-#tabs button{cursor:pointer;flex:0 1 auto;min-width:34px;justify-content:center;position:relative;z-index:2;display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border-radius:99px;border:2px solid rgba(244,201,93,.5);background:rgba(255,248,231,.1);color:#e9f6ef;font:600 .9rem var(--head);text-decoration:none;white-space:nowrap;transition:background .15s,color .15s}
+#tabs button{cursor:pointer;flex:0 0 auto;min-width:34px;justify-content:center;position:relative;z-index:2;display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border-radius:99px;border:2px solid rgba(244,201,93,.5);background:rgba(255,248,231,.1);color:#e9f6ef;font:600 .9rem var(--head);text-decoration:none;white-space:nowrap;transition:background .15s,color .15s}
 #tabs button:hover{background:rgba(255,248,231,.2)}
 #tabs button b{font-weight:700;opacity:.7;font-size:.78rem}
 #tabs button[aria-current="page"]{background:var(--gold);color:var(--wood-d);border-color:var(--wood-d)}
@@ -70,8 +70,7 @@ body{font-family:var(--head);color:var(--parch);display:flex;flex-direction:colu
 
 #sitenav button,#tabs button{touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none}
 @media (pointer:coarse){#sitenav .step{height:42px;min-width:42px;justify-content:center}#tabs button{height:40px}}
-@media (max-width:1100px){#tabs button .lbl{display:none}}
-@media (max-width:520px){#tabs{display:none}#pageSel{display:block}}
+@media (max-width:1280px){#tabs{display:none}#pageSel{display:block}}
 @media (max-width:640px){
   #sitenav{padding:0 6px;gap:6px}
   #sitenav .step{padding:0 10px}
@@ -167,6 +166,22 @@ document.getElementById('vfs').addEventListener('click', function(){
 });
 document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !document.getElementById('vmodal').hidden && !document.fullscreenElement) closeVideo(); });
 var PAGE_META = [{"label": "Intro", "title": "Prepositions Intro"}, {"label": "Team", "title": "Expedition Team"}, {"label": "Quest", "title": "Mastering Prepositions"}, {"label": "Overview", "title": "Prepositions Overview"}, {"label": "Learn", "title": "Learn: Video and Steps"}, {"label": "Manor", "title": "Mystery Manor Detective"}, {"label": "Dragon", "title": "Dragon Siege: Castle Defense"}, {"label": "Station", "title": "Star Station Rescue"}, {"label": "Skyfall", "title": "Operation Skyfall"}, {"label": "Quiz", "title": "Preposition Quizzes"}, {"label": "Scores", "title": "Score Board"}];
+PAGE_META.forEach(function(page, index){
+  page.sourceIndex = index;
+  page.hash = '#page' + (index + 1);
+  page.ownsSound = index === 0 || (index >= 5 && index <= 8);
+});
+PAGE_META.splice(9, 0, { label: 'Nightfall', title: 'Operation Nightfall', hash: '#operation-nightfall', path: 'operation-nightfall/', ownsSound: true });
+PAGE_META.push(
+  { label: 'DSKP', title: 'DSKP', hash: '#dskp', path: 'dskp/' },
+  { label: 'References', title: 'References', hash: '#references', path: 'references/' }
+);
+const COURSE_URL = 'https://masamir18.github.io/EDUP6023-What-is-Pip/';
+function hostedPage(path){
+  var base = /^(https?|file):$/.test(location.protocol) ? document.baseURI : COURSE_URL;
+  return new URL(path, base).href;
+}
+
 </script>
 
 <script>
@@ -263,9 +278,8 @@ var Music = (function(){
   }
   function gesture(){ if (want && !onIntro && a.paused) start(); }
   function hold(on){ held = !!on; if (!a.paused) fadeTo(target(), 300); }
-  /* pages 1 and 6-9 keep their own soundtrack; the MP3 plays on pages 2-5 and 10-11 */
   function page(n){
-    onIntro = (n === 1 || (n >= 6 && n <= 9));   // page 1 and the four games (6-9) have their own sound
+    onIntro = Boolean(PAGE_META[n - 1].ownsSound);
     btn.hidden = onIntro;
     if (onIntro){ blocked = false; if (!a.paused) fadeTo(0, 500, function(){ if (onIntro) a.pause(); }); }
     else {
@@ -316,7 +330,7 @@ var Music = (function(){
 <script>
 (function(){
   'use strict';
-  var N = PAGE_SRC.length, SCORE_PAGE = N;          // page 10 = Score Board
+  var N = PAGE_META.length, SCORE_PAGE = PAGE_META.findIndex(function(page){ return page.hash === "#page11"; }) + 1;
   var GAMES = {
     place:'Stage 1 · Place', time:'Stage 2 · Time', direction:'Stage 3 · Direction', manner:'Stage 4 · Manner & Agent',
     final:'Final Challenge', manor:'Mystery Manor Detective', dragon:'Dragon Siege', station:'Star Station Rescue', skyfall:'Operation Skyfall'
@@ -363,14 +377,22 @@ var Music = (function(){
     f.setAttribute('allow', 'autoplay; fullscreen; clipboard-write; pointer-lock');
     f.setAttribute('allowfullscreen', '');
     f.addEventListener('load', function(){ if (f === frame) loading.classList.add('done'); });
-    f.srcdoc = PAGE_SRC[n - 1];
+    var page = PAGE_META[n - 1];
+    if (page.path) f.src = hostedPage(page.path);
+    else f.srcdoc = PAGE_SRC[page.sourceIndex];
     frame = f; stage.appendChild(f);
     document.title = PAGE_META[n - 1].title + ' · Language Explorer Quest';
     updateNav();
   }
   function updateNav(){
     Array.prototype.forEach.call(tabsEl.children, function(a, i){
-      if (i + 1 === cur){ a.setAttribute('aria-current', 'page');  }
+      if (i + 1 === cur){
+        a.setAttribute('aria-current', 'page');
+        if (a.offsetLeft < tabsEl.scrollLeft) tabsEl.scrollLeft = a.offsetLeft;
+        if (a.offsetLeft + a.offsetWidth > tabsEl.scrollLeft + tabsEl.clientWidth) {
+          tabsEl.scrollLeft = a.offsetLeft + a.offsetWidth - tabsEl.clientWidth;
+        }
+      }
       else a.removeAttribute('aria-current');
     });
     sel.value = String(cur);
@@ -381,13 +403,16 @@ var Music = (function(){
     if (n < 1 || n > N) return;
     /* Only touch the address bar on a normal stand-alone page. Inside Google Sites the frame is
        about:srcdoc / a data page and changing its hash reloads it back to page 1 (menu "does nothing"). */
-    try { if (window.top === window && /^(https?|file):$/.test(location.protocol) && location.hash !== '#page' + n) location.hash = '#page' + n; } catch (e) {}
+    var hash = PAGE_META[n - 1].hash;
+    try { if (window.top === window && /^(https?|file):$/.test(location.protocol) && location.hash !== hash) location.hash = hash; } catch (e) {}
     render(n);                                                                             // never depend on the URL to change pages
   }
   function route(){
-    var m = /^#page(\d+)$/.exec(location.hash), n = m ? parseInt(m[1], 10) : 1;
-    if (!(n >= 1 && n <= N)) n = 1;
-    if (!m || +m[1] !== n){ try { history.replaceState(null, '', '#page' + n); } catch (e) {} }
+    var n = PAGE_META.findIndex(function(page){ return page.hash === location.hash; }) + 1;
+    if (!n){
+      n = 1;
+      try { history.replaceState(null, '', PAGE_META[0].hash); } catch (e) {}
+    }
     render(n);                                                                             // always starts on page 1 (Intro) by default
   }
   prevBtn.addEventListener('click', function(){ Music.gesture(); go(cur - 1); });

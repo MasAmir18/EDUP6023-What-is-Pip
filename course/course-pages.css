@@ -1,0 +1,56 @@
+:root {
+  color-scheme: light;
+  --pine: #123e32;
+  --pine-deep: #082820;
+  --gold: #f4c95d;
+  --parchment: #fff8e7;
+  --ink: #18332b;
+  --muted: #475951;
+  --line: #d7cebb;
+  --heading: Fredoka, "Trebuchet MS", system-ui, sans-serif;
+  font-family: "DM Sans", system-ui, sans-serif;
+  background: #f4ecda;
+  color: var(--ink);
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+a { color: #165743; text-underline-offset: .18em; }
+a:hover { color: #103c2e; }
+a:focus-visible, summary:focus-visible { outline: 3px solid #bd7d11; outline-offset: 4px; }
+p, li { line-height: 1.55; }
+h1, h2, h3, .button { font-family: var(--heading); }
+h1 { font-size: clamp(2.7rem, 8vw, 5.4rem); font-weight: 700; line-height: .98; margin: .12em 0 .28em; }
+h2 { font-size: clamp(1.65rem, 3.4vw, 2.15rem); margin: 0 0 .6rem; }
+h3 { font-size: 1.16rem; margin: 0 0 .2rem; }
+.wrap { width: min(1060px, calc(100% - 40px)); margin-inline: auto; }
+.banner { background: linear-gradient(135deg, var(--pine-deep), var(--pine)); color: var(--parchment); border-bottom: 4px solid var(--gold); }
+.banner .wrap { padding: clamp(32px, 7vw, 74px) 0; }
+.banner p { max-width: 62ch; margin: 0; }
+.banner .eyebrow { color: var(--gold); font-weight: 800; font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; }
+.nightfall .banner { background: #142833 url("nightfall.webp") center / cover; }
+.nightfall .banner::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg,#06231ef4 4%,#0c2428d4 50%,#13273032 100%); }
+.nightfall .banner { position: relative; }
+.nightfall .banner .wrap { position: relative; max-width: 1060px; padding-block: clamp(42px, 8vw, 100px); }
+.nightfall .intro { font-size: clamp(1rem, 2.4vw, 1.18rem); max-width: 48ch; }
+.button { display: inline-flex; min-height: 44px; align-items: center; gap: .65rem; padding: .73rem 1.18rem; background: var(--gold); color: var(--pine-deep); border-radius: 100px; font-weight: 700; text-decoration: none; margin-top: 1.45rem; box-shadow: 0 3px 0 #9e6d21; }
+.button:hover { background: #ffe292; color: var(--pine-deep); }
+.banner .access { margin-top: .9rem; font-size: .87rem; color: #f4e9d3; }
+main.wrap { padding: clamp(24px, 5vw, 48px) 0 2.35rem; }
+.layout { display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(220px, 1fr); align-items: start; gap: 1.2rem; }
+.panel { background: var(--parchment); border: 1px solid var(--line); border-radius: 17px; padding: clamp(17px, 3.5vw, 28px); margin: 0 0 1.1rem; }
+.panel > :last-child { margin-bottom: 0; }
+.list { list-style: none; padding: 0; margin: 1rem 0 0; }
+.list li { border-top: 1px solid var(--line); padding: .73rem 0; }
+.list li:last-child { padding-bottom: 0; }
+.list p { margin: .12rem 0 0; color: var(--muted); }
+.missions { list-style: decimal-leading-zero; padding-left: 1.75rem; margin: .8rem 0 0; }
+.missions li { padding: .36rem 0 .36rem .3rem; border-top: 1px solid var(--line); }
+.missions li::marker { color: #67512c; font-weight: 800; }
+dl { margin: .9rem 0 0; }
+dt { font-weight: 800; margin-top: .7rem; }
+dd { margin: .1rem 0 0; line-height: 1.45; color: var(--muted); }
+.linkline { margin-top: .8rem; }
+@media (max-width: 700px) {
+  .layout { grid-template-columns: 1fr; gap: 0; }
+  .nightfall .banner::before { background: linear-gradient(90deg,#06231ef4,#0a242bcc); }
+}
