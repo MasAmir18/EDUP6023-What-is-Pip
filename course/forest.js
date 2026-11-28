@@ -33,9 +33,9 @@
   (function buildForest(){
     const rnd=mulberry32(202603);
 
-    // 54 twinkling stars in upper 60%
+    // 70 twinkling stars in upper 60%
     const starsEl=$('#stars');
-    for(let i=0;i<54;i++){
+    for(let i=0;i<70;i++){
       const s=document.createElement('span');
       s.className='star';
       const sz=rnd()>.55?4:3;
@@ -43,7 +43,7 @@
       starsEl.appendChild(s);
     }
 
-    // 3 seamless pine tree layers (each 1600px wide repeated 3x)
+    // Seamless pine layers with enough tiles to cover the viewport.
     function makePineLayer(trackEl,cfg){
       const r=mulberry32(cfg.seed);
       const W=1600,H=cfg.viewH;
@@ -128,4 +128,22 @@
       leafEl.appendChild(l);
     }
   })();
+  const forest = $('.forest-bg');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let frame;
+  function updateParallax() {
+    frame = undefined;
+    const scrollRange = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    const progress = reducedMotion.matches ? 0 : Math.max(0, Math.min(1, window.scrollY / scrollRange));
+    for (const [depth, offset] of [['far',30],['mid',70],['near',120]]) {
+      forest.style.setProperty('--' + depth + '-y', (-offset * progress).toFixed(1) + 'px');
+    }
+  }
+  function refresh() {
+    if (frame === undefined) frame = window.requestAnimationFrame(updateParallax);
+  }
+  window.addEventListener('scroll', refresh, { passive: true });
+  window.addEventListener('resize', refresh);
+  reducedMotion.addEventListener('change', refresh);
+  refresh();
 })();
